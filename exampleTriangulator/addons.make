@@ -1,3 +1,4 @@
 ofxGui
 ofxNCKinect
 ofxOpenCv
+ofxYAML

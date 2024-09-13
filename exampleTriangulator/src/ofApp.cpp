@@ -7,7 +7,13 @@ void ofApp::setup(){
 	kinectcore.setup(true);
 	kinectcamera.setup();
 	kinectusermanager.setup(kinectcore.getUsers(), kinectcamera);
-	kinecttriangulator.setup(kinectusermanager.getUsers(), kinectcore, kinectcamera, kinectcore.getBodyIndexPixels(), kinectcore.getPointCloud3D(), 10);
+	kinecttriangulator.setup(
+		kinectusermanager.getUsers(), 
+		kinectcore, 
+		kinectcamera, 
+		kinectcore.getBodyIndexPixels(), 
+		kinectcore.getPointCloud3D(), 
+		10);
 }
 
 //--------------------------------------------------------------

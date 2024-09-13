@@ -33,7 +33,7 @@ void ofApp::setup(){
 	kinectusermanager.setup(kinectcore.getUsers(), kinectcamera);
 	kinectscene.setup(kinectcore, kinectusermanager, kinectcamera);
 
-
+	
 	ofSetWindowTitle("SENDER");
 }
 
