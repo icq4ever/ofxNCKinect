@@ -40,7 +40,6 @@ private:
 	ofParameter <float> kinectyrotation;
 
 	int port;
+	int id;
 	NCKinectScene kinectscene;
-
-
 };

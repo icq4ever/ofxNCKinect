@@ -7,14 +7,16 @@ void ncKinectReceiver::setup(int _port, int _id) {
 	bisthreadrunning = false;
 	bisconnected = false;
 	sleeptime = 5;
+	id = _id;
 
-	gui.setup("TCP", "_settings/tcp_receiver_"+ofToString(_id)+".xml");
+	gui.setup("Kinect " + ofToString(id), "_settings/tcp_receiver_" + ofToString(_id) + ".xml");
 	gui.add(sleeptime.set("sleeptime", sleeptime, 1, 1000));
 	gui.add(kinectcamxpos.set("kinect x pos", 0, -5, 5));
 	gui.add(kinectcamypos.set("kinect y pos", 0, -5, 5));
 	gui.add(kinectcamzpos.set("kinect z pos", 0, -5, 5));
 	gui.add(kinectyrotation.set("kinect y rotation", 0, -90, 90));
 	gui.loadFromFile("_settings/tcp_receiver_" + ofToString(_id) + ".xml");
+	gui.setPosition(10, id*120 + 60);
 
 	kinectscene.setup();
 	
@@ -23,6 +25,7 @@ void ncKinectReceiver::setup(int _port, int _id) {
 
 void ncKinectReceiver::update() {
 	
+	//kinectscene.camera.set
 	kinectscene.cameraposition = ofVec3f(kinectcamxpos, kinectcamypos, kinectcamzpos);
 	kinectscene.camerarotation = ofQuaternion(kinectyrotation, ofVec3f(0, 1, 0));
 }
@@ -64,7 +67,7 @@ void ncKinectReceiver::threadedFunction() {
 			bool bWorkdone = false;
 			bisconnected = true;
 
-			cout << "SENDER CONNECTED" << endl;
+			cout << "SENDER " << id  << " CONNECTED" << endl;
 				while (!bWorkdone) {
 
 					s->SendLine("A");
@@ -83,8 +86,8 @@ void ncKinectReceiver::threadedFunction() {
 						mutex.lock();
 						ncKinectSeDeserializer tcpobject;
 						data = tcpobject.deserialize(buffer);
-
-						kinectscene.pointcloud.mesh.getVertices() = data.vertices;
+						
+						kinectscene.pointcloud.mesh.getVertices() = data.vertices;	// transferred data to kinectscene PCL
 						kinectscene.floorplane = data.floorplane;
 
 						vector<NCJoints> heads;
@@ -93,6 +96,7 @@ void ncKinectReceiver::threadedFunction() {
 							head.setup();
 							head.positions = data.users[i].joints3dposition;
 							heads.push_back(head);
+
 						}
 						kinectscene.heads = heads;
 						mutex.unlock();
