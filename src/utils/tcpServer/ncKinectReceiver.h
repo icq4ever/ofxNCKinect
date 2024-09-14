@@ -15,11 +15,11 @@ class ncKinectReceiver : public ofThread {
 
 		void drawGUI();
 
-
 		void start();
 		void stop();
 
 		void threadedFunction();
+		void setCameraVisible(bool b);
 
 		bool bisthreadrunning;
 		bool bisconnected;
@@ -38,6 +38,7 @@ private:
 	ofParameter <float> kinectcamypos;
 	ofParameter <float> kinectcamzpos;
 	ofParameter <float> kinectyrotation;
+	ofParameter <float> kinectzrotation;
 
 	int port;
 	int id;

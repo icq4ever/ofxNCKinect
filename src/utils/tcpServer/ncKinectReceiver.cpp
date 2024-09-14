@@ -15,19 +15,30 @@ void ncKinectReceiver::setup(int _port, int _id) {
 	gui.add(kinectcamypos.set("kinect y pos", 0, -5, 5));
 	gui.add(kinectcamzpos.set("kinect z pos", 0, -5, 5));
 	gui.add(kinectyrotation.set("kinect y rotation", 0, -90, 90));
+	gui.add(kinectzrotation.set("kinect z rotation", 0, -45, 45));
 	gui.loadFromFile("_settings/tcp_receiver_" + ofToString(_id) + ".xml");
-	gui.setPosition(10, id*120 + 60);
+	gui.setPosition(10, id*160 + 60);
 
 	kinectscene.setup();
 	
 	start();
 }
 
+void ncKinectReceiver::setCameraVisible(bool b) {
+	if (b)	this->kinectscene.bDrawCamera = true;
+	else	this->kinectscene.bDrawCamera = false;
+}
+
 void ncKinectReceiver::update() {
 	
 	//kinectscene.camera.set
 	kinectscene.cameraposition = ofVec3f(kinectcamxpos, kinectcamypos, kinectcamzpos);
-	kinectscene.camerarotation = ofQuaternion(kinectyrotation, ofVec3f(0, 1, 0));
+	kinectscene.camerarotation = ofQuaternion(
+		0, ofVec3f(1, 0, 0), 
+		kinectyrotation, ofVec3f(0, 1, 0), 
+		kinectzrotation, ofVec3f(0, 0, 1)
+	);
+	//kinectscene.camerarotation = ofQuaternion(kinectzrotation, ofVec3f(0, 0, 1));
 }
 
 void ncKinectReceiver::draw() {
