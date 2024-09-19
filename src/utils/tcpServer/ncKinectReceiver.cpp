@@ -29,6 +29,10 @@ void ncKinectReceiver::setCameraVisible(bool b) {
 	else	this->kinectscene.bDrawCamera = false;
 }
 
+void ncKinectReceiver::setJointVisible(bool b) {
+	this->kinectscene.bDrawJoints = b;
+}
+
 void ncKinectReceiver::update() {
 	
 	//kinectscene.camera.set

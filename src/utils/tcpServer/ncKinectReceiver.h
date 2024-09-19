@@ -20,6 +20,7 @@ class ncKinectReceiver : public ofThread {
 
 		void threadedFunction();
 		void setCameraVisible(bool b);
+		void setJointVisible(bool b);
 
 		bool bisthreadrunning;
 		bool bisconnected;
