@@ -7,21 +7,31 @@ class ncKinectSeDeSerObject {
 public:
 	// added by donghoon
 	ncKinectSeDeSerObject() {
-		this->colorPixels.allocate(512, 414, OF_IMAGE_COLOR_ALPHA);
-		this->bodyColorPixels.allocate(512, 414, OF_IMAGE_COLOR_ALPHA);
+		this->colorPixels = new ofPixels();
+		this->bodyColorPixels = new ofPixels();
+
+		this->colorPixels->allocate(1920, 1080, OF_IMAGE_COLOR_ALPHA);
+		this->bodyColorPixels->allocate(512, 424, OF_IMAGE_COLOR_ALPHA);
+	}
+
+	~ncKinectSeDeSerObject() {
+		//delete colorPixels;
+		//delete bodyColorPixels;
 	}
 	
 	void setColorPixels(ofPixels _p) {
-		this->colorPixels = _p;
+		this->colorPixels = &_p;
+		//this->colorPixels.setFromPixels(_p, 512, 424, OF_IMAGE_COLOR_ALPHA);
 	}
 
 	void setBodyColorPixels(ofPixels _p) {
-		this->bodyColorPixels = _p;
+		this->bodyColorPixels = &_p;
+		//this->bodyColorPixels.setFromPixels(_p);
 	}
 
 	// added by donghoon
-	ofPixels colorPixels;
-	ofPixels bodyColorPixels;
+	ofPixels *colorPixels;
+	ofPixels *bodyColorPixels;
 
 
 	ofVec4f floorplane;
@@ -145,6 +155,25 @@ public:
 			object.vertices.push_back(value);
 		}
 
+		// added by donghoon
+		/*ofPixels colorPixels, bodyColorPixels;
+		colorPixels.allocate(1920, 1080, OF_IMAGE_COLOR_ALPHA);
+		bodyColorPixels.allocate(512, 424, OF_IMAGE_COLOR_ALPHA);*/
+		
+		// GET COLOR PIXELS
+		unsigned char* dataColorPixels = (unsigned char*)buffer.getData();
+		int startColorPixels = findDelimiter(buffer, COLOR_PIXELS_BEGIN);
+		int startPosColorPixels = startColorPixels + COLOR_PIXELS_BEGIN.length();
+		dataColorPixels += startPosColorPixels;
+		memcpy(&object.colorPixels, dataColorPixels, sizeof(object.colorPixels));
+
+		// GET BODY COLOR PIXELS
+		unsigned char* dataBodyColorPixels = (unsigned char*)buffer.getData();
+		int startBodyColorPixels = findDelimiter(buffer, BODY_COLOR_PIXELS_BEGIN);
+		int startPosBodyColorPixels = startBodyColorPixels + BODY_COLOR_PIXELS_BEGIN.length();
+		dataBodyColorPixels += startPosBodyColorPixels;
+		memcpy(&object.bodyColorPixels, dataColorPixels, sizeof(object.bodyColorPixels));
+
 		//GET NUM SKELETONS
 		int numSkeletons = getValue(buffer, NUM_SKEL_BEGIN, NUM_SKEL_END);
 
@@ -243,20 +272,22 @@ public:
 		// color pixels
 		// FIRST ADD NUMBER OF 
 		buffer.append(COLOR_PIXELS_BEGIN);
-		buffer.append(ofToString(source.colorPixels.size()));
-		if (source.colorPixels.size() > 0) {
-			ofPixels* data = &source.colorPixels;
-			int dataSize = sizeof(ofPixels) * source.colorPixels.size();
+		//buffer.append(ofToString(source.colorPixels.size()));
+		if (source.colorPixels->size() > 0) {
+		//char sendPixelsData[sizeof(&source.colorPixels.size())];
+			ofPixels* data = source.colorPixels;
+			int dataSize = source.colorPixels->size();
+			cout << "colorPixel size : " << dataSize << endl;
 			buffer.append((const char*)data, dataSize);
 		}
 		buffer.append(COLOR_PIXELS_END);
 
 		// 
 		buffer.append(BODY_COLOR_PIXELS_BEGIN);
-		buffer.append(ofToString(source.bodyColorPixels.size()));
-		if (source.bodyColorPixels.size() > 0) {
-			ofPixels* data = &source.bodyColorPixels;
-			int dataSize = sizeof(ofPixels) * source.bodyColorPixels.size();
+		//buffer.append(ofToString(source.bodyColorPixels.size()));
+		if (source.bodyColorPixels->size() > 0) {
+			ofPixels* data = source.bodyColorPixels;
+			int dataSize = source.bodyColorPixels->size();
 			buffer.append((const char*)data, dataSize);
 		}
 		buffer.append(BODY_COLOR_PIXELS_END);
