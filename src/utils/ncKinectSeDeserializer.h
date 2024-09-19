@@ -5,7 +5,27 @@
 class ncKinectSeDeSerObject {
 
 public:
+	// added by donghoon
+	ncKinectSeDeSerObject() {
+		this->colorPixels.allocate(512, 414, OF_IMAGE_COLOR_ALPHA);
+		this->bodyColorPixels.allocate(512, 414, OF_IMAGE_COLOR_ALPHA);
+	}
+	
+	void setColorPixels(ofPixels _p) {
+		this->colorPixels = _p;
+	}
+
+	void setBodyColorPixels(ofPixels _p) {
+		this->bodyColorPixels = _p;
+	}
+
+	// added by donghoon
+	ofPixels colorPixels;
+	ofPixels bodyColorPixels;
+
+
 	ofVec4f floorplane;
+	
 	vector < glm::vec3 > vertices;
 	vector<ncKinectUser> users;
 };
@@ -28,6 +48,12 @@ public:
 
 	const string SKELS_BEGIN = "[skels]";
 	const string SKELS_END = "[/skels]";
+
+	// added by donghoon
+	const string COLOR_PIXELS_BEGIN = "[colorPixels]";
+	const string COLOR_PIXELS_END = "[/colorPixels]";
+	const string BODY_COLOR_PIXELS_BEGIN = "[bodyIndexMapPixelsColorMapped]";
+	const string BODY_COLOR_PIXELS_END = "[/bodyIndexMapPixelsColorMapped]";
 	
 	ncKinectSeDeserializer(){    
     }
@@ -212,6 +238,28 @@ public:
 			buffer.append((const char *)data, dataSize);
 			buffer.append(VERTS_END);
 		}
+
+		// ADDED by donghoon
+		// color pixels
+		// FIRST ADD NUMBER OF 
+		buffer.append(COLOR_PIXELS_BEGIN);
+		buffer.append(ofToString(source.colorPixels.size()));
+		if (source.colorPixels.size() > 0) {
+			ofPixels* data = &source.colorPixels;
+			int dataSize = sizeof(ofPixels) * source.colorPixels.size();
+			buffer.append((const char*)data, dataSize);
+		}
+		buffer.append(COLOR_PIXELS_END);
+
+		// 
+		buffer.append(BODY_COLOR_PIXELS_BEGIN);
+		buffer.append(ofToString(source.bodyColorPixels.size()));
+		if (source.bodyColorPixels.size() > 0) {
+			ofPixels* data = &source.bodyColorPixels;
+			int dataSize = sizeof(ofPixels) * source.bodyColorPixels.size();
+			buffer.append((const char*)data, dataSize);
+		}
+		buffer.append(BODY_COLOR_PIXELS_END);
 
 		//SKELETONS
 		buffer.append(NUM_SKEL_BEGIN);
