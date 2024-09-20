@@ -7,11 +7,11 @@ class ncKinectSeDeSerObject {
 public:
 	// added by donghoon
 	ncKinectSeDeSerObject() {
-		this->colorPixels = new ofPixels();
-		this->bodyColorPixels = new ofPixels();
+		//this->colorPixels = new ofPixels();
+		//this->bodyColorPixels = new ofPixels();
 
-		this->colorPixels->allocate(1920, 1080, OF_IMAGE_COLOR_ALPHA);
-		this->bodyColorPixels->allocate(512, 424, OF_IMAGE_COLOR_ALPHA);
+		//this->colorPixels->allocate(1920, 1080, OF_IMAGE_COLOR_ALPHA);
+		//this->bodyColorPixels->allocate(512, 424, OF_IMAGE_COLOR_ALPHA);
 	}
 
 	~ncKinectSeDeSerObject() {
