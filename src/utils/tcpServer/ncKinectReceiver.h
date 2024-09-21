@@ -38,6 +38,7 @@ private:
 	ofParameter <float> kinectcamxpos;
 	ofParameter <float> kinectcamypos;
 	ofParameter <float> kinectcamzpos;
+	ofParameter <float> kinectxrotation;
 	ofParameter <float> kinectyrotation;
 	ofParameter <float> kinectzrotation;
 
