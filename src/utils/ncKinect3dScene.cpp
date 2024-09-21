@@ -23,6 +23,7 @@ void ncKinect3dScene::setupGUI() {
 	gui.add(bBottom.set("set cam bottom", false));
 	gui.add(bFront.set("set cam front", false));
 	gui.add(bBack.set("set cam back", false));
+	gui.setPosition(10, 100);
 
 	gui.loadFromFile("_settings/kinect3dscene.xml");
 
