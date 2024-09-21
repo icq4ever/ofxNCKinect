@@ -13,7 +13,7 @@ void ncKinectSender::setup(int _id, string _host, int _port){
 
 	gui.setup("Kinect" + ofToString(id), "_settings/tcp_sender.xml");
 	gui.add(sleeptime.set("sleeptime", sleeptime, 1, 1000));
-	gui.add(bsendpointcloud.set("send pointcloud", true));
+	gui.add(bsendpointcloud.set("send All pointcloud", true));
 	gui.loadFromFile("_settings/tcp_sender.xml");
 
 	start();
