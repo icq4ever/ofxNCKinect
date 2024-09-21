@@ -31,13 +31,43 @@ class NCKinectPointcloud3DModel : public ofNode {
 public:
 
 	ofMesh mesh;
+	ofPixels* colorPixels;
+	ofPixels* resizedColorPixels;
+
+	NCKinectPointcloud3DModel() {
+		/*colorPixels.allocate(1920, 1080, OF_IMAGE_COLOR_ALPHA);
+		bodyColorPixels.allocate(512, 424, OF_IMAGE_COLOR_ALPHA);*/
+	}
 
 	virtual void setup() {
 		mesh.setMode(OF_PRIMITIVE_POINTS);
 		mesh.getVertices().resize(512 * 424);
 	}
 
+	virtual void update() {
+		for (int y = 0; y < 424; y++) {
+			for (int x = 0; x < 512; x++) {
+				int index = (y * 512) + x;
+
+				ofVec2f mappedCoord = mesh.getTexCoord(index);
+				mappedCoord.x = floor(mappedCoord.x);
+				mappedCoord.y = floor(mappedCoord.y);
+
+
+				// update userpointcloudmesh
+				if ((0 <= mappedCoord.x) && (mappedCoord.x < 1920) && (0 <= mappedCoord.y) && (mappedCoord.y < 1080)) {
+					resizedColorPixels->setColor(x, y, colorPixels->getColor(mappedCoord.x, mappedCoord.y));
+				}
+
+				mesh.addVertex(mesh.getVertex(index));
+				mesh.addColor(resizedColorPixels->getColor(mappedCoord.x, mappedCoord.y));
+
+			}
+		}
+	}
+
 	virtual void customDraw() {
+		
 		transformGL();
 		mesh.draw();
 		restoreTransformGL();

@@ -101,7 +101,10 @@ void ncKinectReceiver::threadedFunction() {
 						mutex.lock();
 						ncKinectSeDeserializer tcpobject;
 						data = tcpobject.deserialize(buffer);
-						
+
+						kinectscene.pointcloud.colorPixels = data.colorPixels;
+						kinectscene.pointcloud.resizedColorPixels = data.bodyColorPixels;
+											
 						kinectscene.pointcloud.mesh.getVertices() = data.vertices;	// transferred data to kinectscene PCL
 						kinectscene.floorplane = data.floorplane;
 
