@@ -18,7 +18,7 @@ void ncKinectReceiver::setup(int _port, int _id) {
 	gui.add(kinectyrotation.set("kinect y rot", 0, -90, 90));
 	gui.add(kinectzrotation.set("kinect z rot", 0, -45, 45));
 	gui.loadFromFile("_settings/tcp_receiver_" + ofToString(_id) + ".xml");
-	gui.setPosition(10, id*160 + 60);
+	gui.setPosition(10, id*160 + 120);
 
 	kinectscene.setup();
 	
@@ -44,6 +44,10 @@ void ncKinectReceiver::update() {
 		kinectzrotation, ofVec3f(0, 0, 1)
 	);
 	//kinectscene.camerarotation = ofQuaternion(kinectzrotation, ofVec3f(0, 0, 1));
+}
+
+void ncKinectReceiver::drawJoints() {
+	if (kinectscene.bDrawJoints)	kinectscene.jointsDraw();
 }
 
 void ncKinectReceiver::draw() {

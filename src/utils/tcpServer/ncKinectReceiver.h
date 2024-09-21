@@ -12,6 +12,7 @@ class ncKinectReceiver : public ofThread {
 		void setup(int _port, int _id);
 		void update();
 		void draw();
+		void drawJoints();
 
 		void drawGUI();
 
