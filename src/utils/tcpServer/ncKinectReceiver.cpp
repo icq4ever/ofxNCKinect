@@ -47,11 +47,11 @@ void ncKinectReceiver::update() {
 }
 
 void ncKinectReceiver::drawJoints() {
-	if (kinectscene.bDrawJoints)	kinectscene.jointsDraw();
+	if (kinectscene.bDrawJoints)	kinectscene.customDraw(false, true);
 }
 
 void ncKinectReceiver::draw() {
-	kinectscene.customDraw();
+	kinectscene.customDraw(true, false);
 }
 
 void ncKinectReceiver::drawGUI() {

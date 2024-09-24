@@ -104,62 +104,62 @@ public:
 		setGlobalPosition(cameraposition);
 	}
 
-	virtual void jointsDraw() {
+	//virtual void jointsDraw() {
+	//	if (bDoCameraToWorld) {
+	//		restoreTransformGL();
+	//		transformGL();
+	//		//http://blog.hackandi.com/inst/blog/2014/03/18/convert-kinect-cameraspace-to-worldspace-relative-to-floor/
+	//		ofVec3f up = ofVec3f(floorplane.x, floorplane.y, floorplane.z);
+	//		ofVec3f forward = up.getCrossed(ofVec3f(1, 0, 0));
+	//		forward.normalize();
+	//		ofVec3f right = up.getCrossed(forward);
+	//		ofMatrix4x4 mymat = ofMatrix4x4(
+	//			right.x, up.x, forward.x, 0,
+	//			right.y, up.y, forward.y, 0,
+	//			right.z, up.z, forward.z, 0,
+	//			0, floorplane.w, 0, 1);
+
+	//		ofMatrix4x4 currenttranslation;
+	//		currenttranslation.translate(cameraposition);
+	//		ofMatrix4x4 currentrotation;
+	//		currentrotation.rotate(camerarotation);
+
+	//		setTransformMatrix(mymat * currentrotation * currenttranslation);
+
+	//		//ofSetColor(ofColor::fromHex(0xFFFFFF));
+	//		for (int i = 0; i < heads.size(); i++) {
+	//			heads[i].customDraw();
+	//		}
+	//		ofSetColor(255);
+	//		restoreTransformGL();
+	//	}
+	//	else {
+	//		transformGL();
+	//		resetTransform();
+	//		ofMatrix4x4 currenttranslation;
+	//		currenttranslation.translate(cameraposition);
+
+	//		ofMatrix4x4 currentrotation;
+	//		currentrotation.rotate(camerarotation);
+
+	//		setTransformMatrix(currentrotation * currenttranslation);
+
+	//		if (bDrawJoints) {
+	//			ofSetColor(ofColor::fromHex(0xFFFFFF));
+	//			for (int i = 0; i < heads.size(); i++) {
+	//				heads[i].customDraw();
+	//			}
+	//			ofSetColor(255);
+	//		}
+
+	//		restoreTransformGL();
+	//	}
+	//}
+
+	virtual void customDraw(bool _bPCL, bool _bJoints) {
+
 		if (bDoCameraToWorld) {
-			//restoreTransformGL();
-			transformGL();
-			//http://blog.hackandi.com/inst/blog/2014/03/18/convert-kinect-cameraspace-to-worldspace-relative-to-floor/
-			ofVec3f up = ofVec3f(floorplane.x, floorplane.y, floorplane.z);
-			ofVec3f forward = up.getCrossed(ofVec3f(1, 0, 0));
-			forward.normalize();
-			ofVec3f right = up.getCrossed(forward);
-			ofMatrix4x4 mymat = ofMatrix4x4(
-				right.x, up.x, forward.x, 0,
-				right.y, up.y, forward.y, 0,
-				right.z, up.z, forward.z, 0,
-				0, floorplane.w, 0, 1);
-
-			ofMatrix4x4 currenttranslation;
-			currenttranslation.translate(cameraposition);
-			ofMatrix4x4 currentrotation;
-			currentrotation.rotate(camerarotation);
-
-			setTransformMatrix(mymat * currentrotation * currenttranslation);
-
-			//ofSetColor(ofColor::fromHex(0xFFFFFF));
-			for (int i = 0; i < heads.size(); i++) {
-				heads[i].customDraw();
-			}
-			ofSetColor(255);
 			restoreTransformGL();
-		}
-		else {
-			transformGL();
-			resetTransform();
-			ofMatrix4x4 currenttranslation;
-			currenttranslation.translate(cameraposition);
-
-			ofMatrix4x4 currentrotation;
-			currentrotation.rotate(camerarotation);
-
-			setTransformMatrix(currentrotation * currenttranslation);
-
-			if (bDrawJoints) {
-				ofSetColor(ofColor::fromHex(0xFFFFFF));
-				for (int i = 0; i < heads.size(); i++) {
-					heads[i].customDraw();
-				}
-				ofSetColor(255);
-			}
-
-			restoreTransformGL();
-		}
-	}
-
-	virtual void customDraw() {
-
-		if (bDoCameraToWorld) {
-			//restoreTransformGL();
 			transformGL();
 			//http://blog.hackandi.com/inst/blog/2014/03/18/convert-kinect-cameraspace-to-worldspace-relative-to-floor/
 			ofVec3f up = ofVec3f(floorplane.x, floorplane.y, floorplane.z);
@@ -183,17 +183,17 @@ public:
 				camera.draw();
 			}
 
-			if (bDrawPointCloud) {
+			if (bDrawPointCloud && _bPCL) {
 				pointcloud.draw();
 			}
 
-			//if (bDrawJoints) {
-			//	ofSetColor(skeletoncolor);
-			//	for (int i = 0; i < heads.size(); i++) {
-			//		heads[i].customDraw();
-			//	}
-			//	ofSetColor(255);
-			//}
+			if (bDrawJoints && _bJoints) {
+				ofSetColor(skeletoncolor);
+				for (int i = 0; i < heads.size(); i++) {
+					heads[i].customDraw();
+				}
+				ofSetColor(255);
+			}
 			restoreTransformGL();
 		}
 		else {
@@ -211,17 +211,17 @@ public:
 				camera.draw();
 			}
 
-			if (bDrawPointCloud) {
+			if (bDrawPointCloud && _bPCL) {
 				pointcloud.draw();
 			}
 
-			//if (bDrawJoints) {
-			//	ofSetColor(skeletoncolor);
-			//	for (int i = 0; i < heads.size(); i++) {
-			//		heads[i].customDraw();
-			//	}
-			//	ofSetColor(255);
-			//}
+			if (bDrawJoints && _bJoints) {
+				ofSetColor(skeletoncolor);
+				for (int i = 0; i < heads.size(); i++) {
+					heads[i].customDraw();
+				}
+				ofSetColor(255);
+			}
 
 			restoreTransformGL();
 		}
